@@ -26,15 +26,17 @@ post '/' do
     file.close
     output = `cat #{file.path.to_s} | #{command}`
     file.unlink
-    output
   else
-    `#{command}`
+    output = `#{command}`
   end
+
+  status 500 if not $?.success?
+
+  output
 end
 
 post '/coffee' do
   command = "coffee #{params["args"]}"
-  puts command
 
   raise "These characters are not accepted for security purpose: ;&<`" if command =~ /[;^<`]/
 
@@ -49,9 +51,12 @@ post '/coffee' do
     file.close
     output = `cat #{file.path.to_s} | #{command}`
     file.unlink
-    output
   else
-    `#{command}`
+    output = `#{command}`
   end
+
+  status 500 if not $?.success?
+
+  output
 end
 

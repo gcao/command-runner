@@ -41,6 +41,8 @@ function run_coffee {
 #run "cat Gemfile" "grep gem"
 #run "cat test/test.coffee test/test1.coffee" "coffee -c -s"
 
+run "exit 1"
+
 #run_coffee "-v"
 #run_coffee "cat test/test.coffee" "-c -s"
 #run_coffee "cat test/test.coffee test/test1.coffee" "-c -s"
