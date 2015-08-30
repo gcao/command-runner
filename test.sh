@@ -2,13 +2,21 @@
 
 PORT=${PORT:=4567}
 
-echo ------------------------
-echo Testing ls
-echo ------------------------
-curl -s -F 'command=ls' http://localhost:$PORT/
+function run {
+  if [ $# -eq 2 ]; then
+    value=`ruby -ruri -e "puts URI.escape('$2')"`
+    cmd="$1 | curl -s -XPOST --data-binary @- 'http://localhost:$PORT/?with_input=true&command=$value'"
+  else
+    cmd="curl -s -F 'command=$1' http://localhost:$PORT/"
+  fi
+  echo ------------------------
+  echo $cmd
+  echo ------------------------
+  eval $cmd
+  echo "\n\n"
+}
 
-echo "\n\n------------------------"
-echo Testing ls -l
-echo ------------------------
-curl -s -F 'command=ls -l' http://localhost:$PORT/
+#run "ls"
+#run "ls -l"
+run "cat Gemfile" "grep gem"
 
